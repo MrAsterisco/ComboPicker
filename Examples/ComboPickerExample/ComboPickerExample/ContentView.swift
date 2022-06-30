@@ -15,13 +15,14 @@ struct ContentView: View {
   var body: some View {
     VStack {
       ComboPicker(
-        title: "Choose or add an option",
+        title: "Pick a number",
         manualTitle: "Custom...",
         content: $content,
         value: $selection
       )
+      .keyboardType(.numberPad)
       
-      Text("Selected value: \(selection)")
+//      Text("Selected value: \(selection)")
     }
     .padding()
   }

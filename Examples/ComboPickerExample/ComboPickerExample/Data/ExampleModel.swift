@@ -19,6 +19,6 @@ public struct ExampleModel: ComboPickerModel {
   }
   
   public var label: String {
-    "\(NumberFormatter().string(from: .init(value: value)) ?? "") value"
+    "# \(NumberFormatter().string(from: .init(value: value)) ?? "")"
   }
 }

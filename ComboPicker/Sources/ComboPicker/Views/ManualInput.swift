@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ManualInput: View {
   private let title: String
+  private let keyboardType: KeyboardType
   
   @Binding private var value: String
   @FocusState private var focus: ComboPickerMode?
@@ -17,11 +18,13 @@ struct ManualInput: View {
   
   init(
     title: String = "",
+    keyboardType: KeyboardType = .default,
     value: Binding<String>,
     focus: FocusState<ComboPickerMode?>,
     action: @escaping () -> ()
   ) {
     self.title = title
+    self.keyboardType = keyboardType
     self._value = value
     self._focus = focus
     self.action = action
@@ -30,6 +33,9 @@ struct ManualInput: View {
   var body: some View {
 #if os(iOS) || os(macOS)
     TextField(title, text: $value)
+#if !os(macOS)
+      .keyboardType(keyboardType.systemType)
+#endif
       .font(.system(size: 21))
       .multilineTextAlignment(.center)
       .frame(height: 30)

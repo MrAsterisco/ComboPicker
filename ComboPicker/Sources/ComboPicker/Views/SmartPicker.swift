@@ -10,6 +10,7 @@ import SwiftUI
 struct SmartPicker<Model: ComboPickerModel>: View {
   private let title: String
   private let manualTitle: String
+  private let keyboardType: KeyboardType
   
   @Binding private var content: [Model]
   @Binding private var value: Model.Value
@@ -24,6 +25,7 @@ struct SmartPicker<Model: ComboPickerModel>: View {
   public init(
     title: String = "",
     manualTitle: String = "",
+    keyboardType: KeyboardType = .default,
     content: Binding<[Model]>,
     value: Binding<Model.Value>,
     focus: FocusState<ComboPickerMode?>,
@@ -31,6 +33,7 @@ struct SmartPicker<Model: ComboPickerModel>: View {
   ){
     self.title = title
     self.manualTitle = manualTitle
+    self.keyboardType = keyboardType
     self._content = content
     self._value = value
     self._focus = focus
@@ -71,6 +74,7 @@ struct SmartPicker<Model: ComboPickerModel>: View {
       }
       
       TextField(manualTitle, text: $comboBoxInput)
+        .keyboardType(keyboardType.systemType)
     }
     .onChange(of: comboBoxInput) { newValue in
       guard let modelValue = Model.Value(newValue) else { return }
