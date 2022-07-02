@@ -4,7 +4,4 @@
    <FileRef
       location = "group:Examples/ComboPickerExample/ComboPickerExample.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:ComboPicker">
-   </FileRef>
 </Workspace>
