@@ -19,6 +19,10 @@ ComboPicker can display any type that conforms to the `ComboPickerModel` protoco
 
 ```swift
 public struct ExampleModel: ComboPickerModel {
+  public static func ==(lhs: ExampleModel, rhs: ExampleModel) -> Bool {
+    lhs.value == rhs.value
+  }
+
   public let id = UUID()
   public let value: Int
   
@@ -37,15 +41,21 @@ public struct ExampleModel: ComboPickerModel {
   public var valueForManualInput: String? {
     NumberFormatter().string(from: .init(value: value))
   }
-  
-  // Value display label.
-  public var label: String {
-    "# \(NumberFormatter().string(from: .init(value: value)) ?? "")"
+}
+```
+
+You also have to provide an implementation of `ValueFormatterType`, so that the `ComboPicker` knows how to
+represent values in the `Picker`s. The following example illustrates a simple formatter for the model implemented above:
+
+```swift
+final class ExampleModelFormatter: ValueFormatterType {
+  func string(from value: ExampleModel) -> String {
+    "# \(NumberFormatter().string(from: .init(value: value.value)) ?? "")"
   }
 }
 ```
 
-Once you have a collection of models, displaying them in the `CombPicker` is easy:
+Once you have a collection of models and the formatter implementation, building a `ComboPicker` is easy:
 
 ```swift
 @State private var content: [ExampleModel]
@@ -54,6 +64,7 @@ Once you have a collection of models, displaying them in the `CombPicker` is eas
 ComboPicker(
   title: "Pick a number",
   manualTitle: "Custom...",
+  valueFormatter: ExampleModelFormatter(),
   content: $content,
   value: $selection
 )
@@ -63,7 +74,7 @@ ComboPicker(
 `ComboPicker` adapts to the platform to provide an easy and accessible experience regardless of the device.
 
 ### iOS & iPadOS
-On iOS and iPadOS, the `ComboPicker` shows a one-line `Picker` that the user can scroll. If the user taps on it, a text field for manual input appears.
+On iOS and iPadOS, the `ComboPicker` shows a one-line `UIPickerView` that the user can scroll. If the user taps on it, a text field for manual input appears.
 
 ![ComboPicker](images/iphone.gif)
 
@@ -72,6 +83,9 @@ If necessary, you can customize the keyboard type for the manual input field:
 ```swift
 .keyboardType(.numberPad)
 ```
+
+_Note: because of limitations of the SwiftUI `Picker` regarding the gestures handling, as well as the ability of showing and using multiple wheel pickers in the
+same screen, `ComboPicker` is currently relying on a `UIViewRepresentable` implementation of a `UIPickerView`. You can read more about the current limitations [here](https://stackoverflow.com/questions/69122169/ios15-swiftui-wheelpicker-scrollable-outside-frame-and-clipped-area-destructin?noredirect=1&lq=1)._
 
 ### watchOS
 On watchOS, the `ComboPicker`shows a normal `Picker` that the user can scroll using their fingers or the digital crown. If the user taps on it, a text field for manual input appears.

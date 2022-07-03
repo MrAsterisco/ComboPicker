@@ -30,9 +30,6 @@ public protocol ComboPickerModel: Identifiable, Hashable {
   /// - customValue: A custom value the user input.
   init?(customValue: String)
   
-  /// Get the label to use to display this value.
-  var label: String { get }
-  
   /// Get the actual value.
   var value: Value { get }
   
