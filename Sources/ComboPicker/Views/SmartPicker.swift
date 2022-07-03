@@ -7,10 +7,12 @@
 
 import SwiftUI
 
-struct SmartPicker<Model: ComboPickerModel>: View {
+struct SmartPicker<Model: ComboPickerModel, Formatter: ValueFormatterType>: View where Formatter.Value == Model {
   private let title: String
   private let manualTitle: String
+  
   private let keyboardType: KeyboardType
+  private let valueFormatter: Formatter
   
   @Binding private var content: [Model]
   @Binding private var value: Model.Value
@@ -26,6 +28,7 @@ struct SmartPicker<Model: ComboPickerModel>: View {
     title: String = "",
     manualTitle: String = "",
     keyboardType: KeyboardType = .default,
+    valueFormatter: Formatter,
     content: Binding<[Model]>,
     value: Binding<Model.Value>,
     focus: FocusState<ComboPickerMode?>,
@@ -34,6 +37,7 @@ struct SmartPicker<Model: ComboPickerModel>: View {
     self.title = title
     self.manualTitle = manualTitle
     self.keyboardType = keyboardType
+    self.valueFormatter = valueFormatter
     self._content = content
     self._value = value
     self._focus = focus
@@ -68,7 +72,7 @@ struct SmartPicker<Model: ComboPickerModel>: View {
     VStack {
       Picker(title, selection: $value) {
         ForEach($content) { $model in
-          Text(model.label)
+          Text(valueFormatter.string(from: model))
             .tag(model.value)
         }
       }
@@ -84,19 +88,27 @@ struct SmartPicker<Model: ComboPickerModel>: View {
       guard newValue != Model.Value(comboBoxInput) else { return }
       comboBoxInput = ""
     }
-#else
+#elseif os(watchOS)
     Picker(title, selection: $value) {
       ForEach($content) { $model in
-        Text(model.label)
+        Text(valueFormatter.string(from: model))
           .tag(model.value)
       }
     }
     .pickerStyle(.wheel)
-#if !os(watchOS)
-    .frame(height: 30)
-#else
     .frame(height: 50)
-#endif
+    .clipped()
+    .onTapGesture { action() }
+    .focused($focus, equals: .picker)
+#elseif os(iOS)
+    NativePicker(
+      content: $content,
+      selection: $value,
+      valueFormatter: valueFormatter
+    )
+    .compositingGroup()
+    .contentShape(Rectangle())
+    .frame(height: 30)
     .clipped()
     .onTapGesture { action() }
     .focused($focus, equals: .picker)

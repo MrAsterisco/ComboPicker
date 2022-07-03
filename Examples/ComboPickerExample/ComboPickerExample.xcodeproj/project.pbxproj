@@ -22,6 +22,8 @@
 		FA61501A286CDDCF00ADEE20 /* ExampleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA614FF6286CDBAC00ADEE20 /* ExampleModel.swift */; };
 		FA61501B286CDDD300ADEE20 /* ExampleModel+StaticData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA614FF8286CDBB100ADEE20 /* ExampleModel+StaticData.swift */; };
 		FA61501D286CDE1700ADEE20 /* ComboPicker in Frameworks */ = {isa = PBXBuildFile; productRef = FA61501C286CDE1700ADEE20 /* ComboPicker */; };
+		FADCE652287191B1004BC0CB /* ExampleModelFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADCE651287191B1004BC0CB /* ExampleModelFormatter.swift */; };
+		FADCE65328719284004BC0CB /* ExampleModelFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADCE651287191B1004BC0CB /* ExampleModelFormatter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +65,7 @@
 		FA615009286CDD6900ADEE20 /* ComboPickerWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComboPickerWatchApp.swift; sourceTree = "<group>"; };
 		FA61500D286CDD6A00ADEE20 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA615010286CDD6A00ADEE20 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		FADCE651287191B1004BC0CB /* ExampleModelFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleModelFormatter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +143,7 @@
 			children = (
 				FA614FF6286CDBAC00ADEE20 /* ExampleModel.swift */,
 				FA614FF8286CDBB100ADEE20 /* ExampleModel+StaticData.swift */,
+				FADCE651287191B1004BC0CB /* ExampleModelFormatter.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -306,6 +310,7 @@
 				FA614FE9286CDB8F00ADEE20 /* ContentView.swift in Sources */,
 				FA614FE7286CDB8F00ADEE20 /* ComboPickerExampleApp.swift in Sources */,
 				FA614FF9286CDBB100ADEE20 /* ExampleModel+StaticData.swift in Sources */,
+				FADCE652287191B1004BC0CB /* ExampleModelFormatter.swift in Sources */,
 				FA614FF7286CDBAC00ADEE20 /* ExampleModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -317,6 +322,7 @@
 				FA615019286CDDB900ADEE20 /* ContentView.swift in Sources */,
 				FA61500A286CDD6900ADEE20 /* ComboPickerWatchApp.swift in Sources */,
 				FA61501B286CDDD300ADEE20 /* ExampleModel+StaticData.swift in Sources */,
+				FADCE65328719284004BC0CB /* ExampleModelFormatter.swift in Sources */,
 				FA61501A286CDDCF00ADEE20 /* ExampleModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

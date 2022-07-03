@@ -14,12 +14,57 @@ import SwiftUI
 /// options, while still giving them the ability to input new ones.
 /// You can create a combo picker with any value that conforms to `ComboPickerModel`.
 ///
+/// The following code shows an example implementation of a `ComboPickerModel` that wraps an `Int`:
+///
+/// ```swift
+/// public struct Model: ComboPickerModel {
+///   public static func ==(lhs: Model, rhs: Model) -> Bool {
+///     lhs.value == rhs.value
+///   }
+///
+///   public let id = UUID()
+///   public let value: Int
+///
+///   public init(value: Int) {
+///     self.value = value
+///   }
+///
+///   public init?(customValue: String) {
+///     guard let doubleValue = NumberFormatter().number(from: customValue)?.intValue else { return nil }
+///     self.init(value: doubleValue)
+///   }
+///
+///   public var valueForManualInput: String? {
+///     NumberFormatter().string(from: .init(value: value))
+///   }
+/// }
+/// ```
+///
 /// # Predefined Values
 /// The predefined values are displayed in a `Picker` on all platforms, except for macOS, where
-/// the AppKit's `NSComboBox` is used.
+/// AppKit's `NSComboBox` is used.
 ///
-/// - warning: Please note that on tvOS, the amount of visible options in the Picker might be
+/// - warning: On iOS and iPadOS, putting a picker below another one will cause the second picker
+/// to take over all gestures and tap events of the first one. You can, however, fit two pickers on the same line.
+/// - note: Please note that on tvOS, the amount of visible options in the Picker might be
 /// limited, as all options are displayed inline.
+///
+/// # Formatting Values
+/// The predefined values that will be displayed in the `ComboPicker` can be formatted by means of an
+/// implementation of `ValueFormatterType`. You are required to provide one.
+///
+/// Here's an example implementation that uses a `NumberFormatter` to display an `Int` value.
+///
+/// ```swift
+/// final class ModelFormatter: ValueFormatterType {
+///   func string(from value: Model) -> String {
+///     NumberFormatter().string(from: .init(value: value.value)) ?? ""
+///   }
+/// }
+/// ```
+///
+/// - note: Because of the `NSComboBox` works on macOS, predefined values will not be formatted using
+/// this formatter. Their implementation of `LosslessStringConvertible` will be used instead.
 ///
 /// # Manual Input
 /// When the user taps on the Picker, the component switches automatically to the manual input mode.
@@ -31,11 +76,12 @@ import SwiftUI
 ///
 /// - note: On tvOS, there is no tap-interaction. The user can swipe down to access the text field directly.
 /// - note: On macOS, the `NSComboBox` allows users to type directly inside the menu.
-public struct ComboPicker<Model: ComboPickerModel>: View {
+public struct ComboPicker<Model: ComboPickerModel, Formatter: ValueFormatterType>: View where Formatter.Value == Model {
   private let title: String
   private let manualTitle: String
   
   fileprivate var keyboardType = KeyboardType.default
+  fileprivate var valueFormatter: Formatter
   
   @Binding private var content: [Model]
   @Binding private var value: Model.Value
@@ -45,14 +91,24 @@ public struct ComboPicker<Model: ComboPickerModel>: View {
   
   @FocusState private var focus: ComboPickerMode?
   
+  /// Initialize a new `ComboPicker` using the passed values.
+  ///
+  /// - parameters:
+  ///   - title: A title that will be displayed when choosing from a predefined set of values.
+  ///   - manualTitle: A title that will be displayed when using manual input.
+  ///   - valueFormatter: A formatter implementation to represent values in the predefined set.
+  ///   - content: The predefined set of values.
+  ///   - value: The currently selected value.
   public init(
     title: String = "",
     manualTitle: String = "",
+    valueFormatter: Formatter,
     content: Binding<[Model]>,
     value: Binding<Model.Value>
   ) {
     self.title = title
     self.manualTitle = manualTitle
+    self.valueFormatter = valueFormatter
     self._content = content
     self._value = value
   }
@@ -65,6 +121,7 @@ public struct ComboPicker<Model: ComboPickerModel>: View {
           title: title,
           manualTitle: manualTitle,
           keyboardType: keyboardType,
+          valueFormatter: valueFormatter,
           content: $content,
           value: $value,
           focus: _focus,
@@ -116,42 +173,5 @@ private extension ComboPicker {
       self.mode = mode
       focus = mode
     }
-  }
-}
-
-// MARK: - Preview
-struct SwiftUIView_Previews: PreviewProvider {
-  @State static private var selection = "1"
-  
-  struct TestModel: ComboPickerModel {
-    let id = UUID()
-    let value: String
-    
-    init(value: String) {
-      self.value = value
-    }
-    
-    init?(customValue: String) {
-      self.init(value: customValue)
-    }
-    
-    var valueForManualInput: String? {
-      value
-    }
-    
-    var label: String {
-      "\(value) kg"
-    }
-  }
-  
-  static var previews: some View {
-    ComboPicker(
-      content: .constant(
-        (1..<100).map {
-          TestModel(value: "\($0)")
-        }
-      ),
-      value: $selection
-    )
   }
 }
