@@ -19,6 +19,10 @@ ComboPicker can display any type that conforms to the `ComboPickerModel` protoco
 
 ```swift
 public struct ExampleModel: ComboPickerModel {
+  public static func ==(lhs: ExampleModel, rhs: ExampleModel) -> Bool {
+    lhs.value == rhs.value
+  }
+
   public let id = UUID()
   public let value: Int
   
