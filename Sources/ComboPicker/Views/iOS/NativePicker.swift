@@ -52,10 +52,6 @@ struct NativePicker<Content: ComboPickerModel, Formatter: ValueFormatterType>: U
       return 1
     }
     
-//    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-//      return 90
-//    }
-    
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
       return parent.content.wrappedValue.count
     }
