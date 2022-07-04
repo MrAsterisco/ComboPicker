@@ -29,7 +29,7 @@ struct NativePicker<Content: ComboPickerModel, Formatter: ValueFormatterType>: U
   }
   
   func makeUIView(context: UIViewRepresentableContext<Self>) -> UIPickerView {
-    let picker = UIPickerView()
+    let picker = OneLinePickerView()
     picker.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     picker.dataSource = context.coordinator
     picker.delegate = context.coordinator
@@ -52,10 +52,6 @@ struct NativePicker<Content: ComboPickerModel, Formatter: ValueFormatterType>: U
       return 1
     }
     
-    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-      return 90
-    }
-    
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
       return parent.content.wrappedValue.count
     }
@@ -66,6 +62,12 @@ struct NativePicker<Content: ComboPickerModel, Formatter: ValueFormatterType>: U
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
       parent.selection.wrappedValue = parent.content.wrappedValue[row].value
+    }
+  }
+  
+  class OneLinePickerView: UIPickerView {
+    override var intrinsicContentSize: CGSize {
+      .init(width: UIView.noIntrinsicMetric, height: Constants.pickerHeight + Constants.pickerPadding)
     }
   }
 }

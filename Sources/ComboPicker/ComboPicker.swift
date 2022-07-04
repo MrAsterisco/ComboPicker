@@ -169,9 +169,9 @@ public extension ComboPicker {
 
 private extension ComboPicker {
   func change(to mode: ComboPickerMode) {
+    focus = mode
     withAnimation {
       self.mode = mode
-      focus = mode
     }
   }
 }

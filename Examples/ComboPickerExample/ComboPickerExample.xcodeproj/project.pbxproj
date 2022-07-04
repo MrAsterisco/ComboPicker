@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA190ACF2871E4D400C0AC2D /* BasicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA190ACE2871E4D400C0AC2D /* BasicView.swift */; };
+		FA190AD02871E4D400C0AC2D /* BasicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA190ACE2871E4D400C0AC2D /* BasicView.swift */; };
+		FA190AD22871E55B00C0AC2D /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA190AD12871E55A00C0AC2D /* ListView.swift */; };
+		FA190AD32871E55B00C0AC2D /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA190AD12871E55A00C0AC2D /* ListView.swift */; };
 		FA3DD73328707EDC00F37155 /* ComboPicker in Frameworks */ = {isa = PBXBuildFile; productRef = FA3DD73228707EDC00F37155 /* ComboPicker */; };
 		FA614FE7286CDB8F00ADEE20 /* ComboPickerExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA614FE6286CDB8F00ADEE20 /* ComboPickerExampleApp.swift */; };
 		FA614FE9286CDB8F00ADEE20 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA614FE8286CDB8F00ADEE20 /* ContentView.swift */; };
@@ -51,6 +55,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FA190ACE2871E4D400C0AC2D /* BasicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicView.swift; sourceTree = "<group>"; };
+		FA190AD12871E55A00C0AC2D /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		FA3DD73128707EB900F37155 /* ComboPicker */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ComboPicker; path = ../..; sourceTree = "<group>"; };
 		FA614FE3286CDB8F00ADEE20 /* ComboPickerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ComboPickerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA614FE6286CDB8F00ADEE20 /* ComboPickerExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComboPickerExampleApp.swift; sourceTree = "<group>"; };
@@ -123,6 +129,8 @@
 				FA614FF5286CDBA700ADEE20 /* Data */,
 				FA614FE6286CDB8F00ADEE20 /* ComboPickerExampleApp.swift */,
 				FA614FE8286CDB8F00ADEE20 /* ContentView.swift */,
+				FA190ACE2871E4D400C0AC2D /* BasicView.swift */,
+				FA190AD12871E55A00C0AC2D /* ListView.swift */,
 				FA614FEA286CDB9000ADEE20 /* Assets.xcassets */,
 				FA614FEC286CDB9000ADEE20 /* ComboPickerExample.entitlements */,
 				FA614FED286CDB9000ADEE20 /* Preview Content */,
@@ -310,6 +318,8 @@
 				FA614FE9286CDB8F00ADEE20 /* ContentView.swift in Sources */,
 				FA614FE7286CDB8F00ADEE20 /* ComboPickerExampleApp.swift in Sources */,
 				FA614FF9286CDBB100ADEE20 /* ExampleModel+StaticData.swift in Sources */,
+				FA190AD22871E55B00C0AC2D /* ListView.swift in Sources */,
+				FA190ACF2871E4D400C0AC2D /* BasicView.swift in Sources */,
 				FADCE652287191B1004BC0CB /* ExampleModelFormatter.swift in Sources */,
 				FA614FF7286CDBAC00ADEE20 /* ExampleModel.swift in Sources */,
 			);
@@ -322,6 +332,8 @@
 				FA615019286CDDB900ADEE20 /* ContentView.swift in Sources */,
 				FA61500A286CDD6900ADEE20 /* ComboPickerWatchApp.swift in Sources */,
 				FA61501B286CDDD300ADEE20 /* ExampleModel+StaticData.swift in Sources */,
+				FA190AD32871E55B00C0AC2D /* ListView.swift in Sources */,
+				FA190AD02871E4D400C0AC2D /* BasicView.swift in Sources */,
 				FADCE65328719284004BC0CB /* ExampleModelFormatter.swift in Sources */,
 				FA61501A286CDDCF00ADEE20 /* ExampleModel.swift in Sources */,
 			);
