@@ -108,7 +108,7 @@ struct SmartPicker<Model: ComboPickerModel, Formatter: ValueFormatterType>: View
     )
     .compositingGroup()
     .contentShape(Rectangle())
-    .frame(height: 30)
+    .frame(height: Constants.pickerHeight)
     .clipped()
     .onTapGesture { action() }
     .focused($focus, equals: .picker)
