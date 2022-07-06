@@ -44,8 +44,6 @@ import SwiftUI
 /// The predefined values are displayed in a `Picker` on all platforms, except for macOS, where
 /// AppKit's `NSComboBox` is used.
 ///
-/// - warning: On iOS and iPadOS, putting a picker below another one will cause the second picker
-/// to take over all gestures and tap events of the first one. You can, however, fit two pickers on the same line.
 /// - note: Please note that on tvOS, the amount of visible options in the Picker might be
 /// limited, as all options are displayed inline.
 ///
@@ -64,7 +62,23 @@ import SwiftUI
 /// ```
 ///
 /// - note: Because of the `NSComboBox` works on macOS, predefined values will not be formatted using
-/// this formatter. Their implementation of `LosslessStringConvertible` will be used instead.
+/// this formatter. The model value must conform to `LosslessStringConvertible` and that implementation will be used instead.
+///
+/// On iOS, you can also change the font used to represent formatted values in the picker. You can either pass a custom font
+/// or a text style that you'd like to use.
+///
+/// ```swift
+/// ComboPicker(...)
+///   .pickerFont(.init(name: "SomeFont", size: 21))
+///
+/// // or
+///
+/// ComboPicker(...)
+///   .pickerFont(.headline)
+/// ```
+///
+/// - note: The `pickerFont` method is only available on iOS. You cannot change the font on
+/// watchOS, tvOS or macOS.
 ///
 /// # Manual Input
 /// When the user taps on the Picker, the component switches automatically to the manual input mode.
@@ -81,6 +95,9 @@ public struct ComboPicker<Model: ComboPickerModel, Formatter: ValueFormatterType
   private let manualTitle: String
   
   fileprivate var keyboardType = KeyboardType.default
+#if os(iOS)
+  fileprivate var pickerFont: UIFont?
+#endif
   fileprivate var valueFormatter: Formatter
   
   @Binding private var content: [Model]
@@ -124,9 +141,13 @@ public struct ComboPicker<Model: ComboPickerModel, Formatter: ValueFormatterType
           valueFormatter: valueFormatter,
           content: $content,
           value: $value,
+          manualInput: $manualInput,
           focus: _focus,
           action: { change(to: .manual) }
         )
+#if os(iOS)
+        .font(pickerFont)
+#endif
       case .manual:
         ManualInput(
           title: manualTitle,
@@ -165,6 +186,20 @@ public extension ComboPicker {
     newSelf.keyboardType = type
     return newSelf
   }
+  
+#if os(iOS)
+  @available(iOS 15, *)
+  func pickerFont(_ font: UIFont?) -> Self {
+    var newSelf = self
+    newSelf.pickerFont = font
+    return newSelf
+  }
+  
+  @available(iOS 15, *)
+  func pickerFont(_ textStyle: UIFont.TextStyle) -> Self {
+    pickerFont(.preferredFont(forTextStyle: textStyle))
+  }
+#endif
 }
 
 private extension ComboPicker {
