@@ -39,6 +39,9 @@ struct BasicView: View {
         value: $otherSelection
       )
       .keyboardType(.numberPad)
+#if os(iOS)
+      .pickerFont(.caption2)
+#endif
     }
     .padding()
   }

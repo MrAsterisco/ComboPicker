@@ -10,16 +10,18 @@ import SwiftUI
 struct SmartPicker<Model: ComboPickerModel, Formatter: ValueFormatterType>: View where Formatter.Value == Model {
   private let title: String
   private let manualTitle: String
+  private let valueFormatter: Formatter
   
   private let keyboardType: KeyboardType
-  private let valueFormatter: Formatter
+  
+#if os(iOS)
+  fileprivate var font: UIFont?
+#endif
   
   @Binding private var content: [Model]
   @Binding private var value: Model.Value
   
-#if os(macOS) || os(tvOS)
-  @State private var comboBoxInput = ""
-#endif
+  @Binding private var manualInput: String
   @FocusState private var focus: ComboPickerMode?
   
   let action: () -> ()
@@ -31,6 +33,7 @@ struct SmartPicker<Model: ComboPickerModel, Formatter: ValueFormatterType>: View
     valueFormatter: Formatter,
     content: Binding<[Model]>,
     value: Binding<Model.Value>,
+    manualInput: Binding<String>,
     focus: FocusState<ComboPickerMode?>,
     action: @escaping () -> ()
   ){
@@ -40,6 +43,7 @@ struct SmartPicker<Model: ComboPickerModel, Formatter: ValueFormatterType>: View
     self.valueFormatter = valueFormatter
     self._content = content
     self._value = value
+    self._manualInput = manualInput
     self._focus = focus
     self.action = action
   }
@@ -55,18 +59,8 @@ struct SmartPicker<Model: ComboPickerModel, Formatter: ValueFormatterType>: View
       
       ComboBox(
         items: content.map { $0.value.description },
-        text: $comboBoxInput
+        text: $manualInput
       )
-    }
-    .onChange(of: comboBoxInput) { newValue in
-      guard let modelValue = Model.Value(newValue) else { return }
-      value = modelValue
-    }
-    .onChange(of: value) { newValue in
-      comboBoxInput = newValue.description
-    }
-    .onAppear {
-      comboBoxInput = value.description
     }
 #elseif os(tvOS)
     VStack {
@@ -77,16 +71,13 @@ struct SmartPicker<Model: ComboPickerModel, Formatter: ValueFormatterType>: View
         }
       }
       
-      TextField(manualTitle, text: $comboBoxInput)
+      TextField(manualTitle, text: $manualInput)
+        .font(.headline)
         .keyboardType(keyboardType.systemType)
     }
-    .onChange(of: comboBoxInput) { newValue in
-      guard let modelValue = Model.Value(newValue) else { return }
-      value = modelValue
-    }
     .onChange(of: value) { newValue in
-      guard newValue != Model.Value(comboBoxInput) else { return }
-      comboBoxInput = ""
+      guard newValue != Model.Value(manualInput) else { return }
+      manualInput = ""
     }
 #elseif os(watchOS)
     Picker(title, selection: $value) {
@@ -104,14 +95,23 @@ struct SmartPicker<Model: ComboPickerModel, Formatter: ValueFormatterType>: View
     NativePicker(
       content: $content,
       selection: $value,
-      valueFormatter: valueFormatter
+      valueFormatter: valueFormatter,
+      font: font
     )
-    .compositingGroup()
-    .contentShape(Rectangle())
     .frame(height: Constants.pickerHeight)
     .clipped()
     .onTapGesture { action() }
     .focused($focus, equals: .picker)
 #endif
   }
+}
+
+extension SmartPicker {
+#if os(iOS)
+  func font(_ font: UIFont?) -> Self {
+    var newSelf = self
+    newSelf.font = font
+    return newSelf
+  }
+#endif
 }

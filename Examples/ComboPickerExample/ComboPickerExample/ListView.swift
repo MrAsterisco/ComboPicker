@@ -23,7 +23,9 @@ struct ListView: View {
         content: $content,
         value: $selection
       )
-      
+#if os(iOS)
+      .pickerFont(.headline)
+#endif
       .keyboardType(.numberPad)
       .padding()
       

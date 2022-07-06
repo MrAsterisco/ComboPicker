@@ -33,9 +33,9 @@ struct ManualInput: View {
 #if os(iOS) || os(macOS)
     HStack {
       TextField(title, text: $value)
-  #if !os(macOS)
+#if !os(macOS)
         .keyboardType(keyboardType.systemType)
-  #endif
+#endif
         .font(.system(size: 21))
         .multilineTextAlignment(.center)
         .frame(height: 30)
@@ -49,6 +49,7 @@ struct ManualInput: View {
         .background(Color.secondary.opacity(0.1))
         .cornerRadius(8)
         .padding([.leading, .trailing], 8)
+        .onSubmit(performAction)
     }
 #elseif os(watchOS)
     HStack {

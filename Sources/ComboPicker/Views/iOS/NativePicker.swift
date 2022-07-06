@@ -16,12 +16,14 @@ struct NativePicker<Content: ComboPickerModel, Formatter: ValueFormatterType>: U
   let content: Binding<[Content]>
   var selection: Binding<Content.Value>
   
+  let font: UIFont?
   let valueFormatter: Formatter
   
-  init(content: Binding<[Content]>, selection: Binding<Content.Value>, valueFormatter: Formatter) {
+  init(content: Binding<[Content]>, selection: Binding<Content.Value>, valueFormatter: Formatter, font: UIFont? = nil) {
     self.content = content
     self.selection = selection
     self.valueFormatter = valueFormatter
+    self.font = font
   }
   
   func makeCoordinator() -> Self.Coordinator {
@@ -56,8 +58,26 @@ struct NativePicker<Content: ComboPickerModel, Formatter: ValueFormatterType>: U
       return parent.content.wrappedValue.count
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-      return parent.valueFormatter.string(from: parent.content.wrappedValue[row])
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+      let value = parent.valueFormatter.string(from: parent.content.wrappedValue[row])
+      
+      if
+        let view = view as? UILabel,
+        (view.font == parent.font || parent.font == nil)
+      {
+        view.text = value
+        return view
+      }
+      
+      let label = UILabel()
+      // Use the default text size for pickers, unless a different font is specified.
+      // This is necessary to mimic the standard behavior, when the delegate only returns strings.
+      label.font = parent.font ?? .systemFont(ofSize: 21)
+      label.text = value
+      label.textAlignment = .center
+      label.adjustsFontForContentSizeCategory = true
+      
+      return label
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
